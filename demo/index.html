@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OpenSCAD Web Viewer</title>
+    <meta name="description" content="Standalone OpenSCAD interpreter and viewer running entirely in the browser." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath fill=%22%232f6fde%22 d=%22M12 2 3 7v10l9 5 9-5V7l-9-5Z%22/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2 3 7v10l9 5 9-5V7l-9-5Zm0 2.3 6.7 3.7L12 11.7 5.3 8 12 4.3ZM5 9.7l6 3.3v6.7l-6-3.3V9.7Zm8 10V13l6-3.3v6.7l-6 3.3Z"/></svg>
+        <span>OpenSCAD&nbsp;Web</span>
+      </div>
+      <label class="field">
+        <span class="sr-only">Example</span>
+        <select id="examples" title="Load an example"></select>
+      </label>
+      <div class="spacer"></div>
+      <label class="toggle" title="Re-render automatically while typing">
+        <input type="checkbox" id="auto" checked /> <span>Live</span>
+      </label>
+      <button id="btn-preview" title="Preview (F5)">Preview</button>
+      <button id="btn-render" title="Exact render with full CSG unions (F6)">Render</button>
+      <button id="btn-stl" title="Export exact STL">STL</button>
+      <button id="btn-share" title="Copy a shareable link">Share</button>
+      <button id="btn-theme" class="icon" title="Toggle light/dark theme" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9c0-.5 0-1-.1-1.4A5.5 5.5 0 0 1 12.4 3.1L12 3Z"/></svg>
+      </button>
+    </header>
+
+    <main class="split" id="split">
+      <section class="pane left" id="left">
+        <div id="editor" class="editor"></div>
+        <div class="console-wrap">
+          <div class="console-head">
+            <span>Console</span>
+            <span class="counts" id="counts"></span>
+            <button class="link" id="btn-clear">Clear</button>
+          </div>
+          <div id="console" class="console" role="log" aria-live="polite"></div>
+        </div>
+      </section>
+      <div class="gutter" id="gutter" role="separator" aria-orientation="vertical" title="Drag to resize"></div>
+      <section class="pane right" id="right">
+        <div class="viewer-wrap">
+          <div id="viewer" class="viewer"></div>
+          <div class="viewer-toolbar" id="viewer-toolbar">
+            <button data-view="iso" title="Isometric view">Iso</button>
+            <button data-view="top" title="Top view">Top</button>
+            <button data-view="front" title="Front view">Front</button>
+            <button data-view="right" title="Right view">Right</button>
+            <span class="sep"></span>
+            <button id="btn-fit" title="Fit model (double-click viewer)">Fit</button>
+            <button id="btn-proj" title="Toggle perspective / orthographic">Persp</button>
+            <span class="sep"></span>
+            <button id="btn-edges" class="on" title="Show edges">Edges</button>
+            <button id="btn-grid" class="on" title="Show grid">Grid</button>
+            <button id="btn-axes" class="on" title="Show axes">Axes</button>
+          </div>
+          <div class="busy" id="busy" hidden><span class="spinner"></span> Rendering…</div>
+          <div class="hint" id="hint">Drag to orbit · Right-drag / Shift-drag to pan · Wheel to zoom</div>
+        </div>
+        <aside class="customizer" id="customizer">
+          <div class="cz-head">
+            <button class="cz-toggle" id="cz-toggle" title="Show/hide customizer">Customizer</button>
+            <button class="link" id="cz-reset" title="Reset all parameters to their default values">Reset</button>
+          </div>
+          <div class="cz-body" id="cz-body"></div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="statusbar">
+      <span id="status">Loading geometry engine…</span>
+      <span class="spacer"></span>
+      <span id="stats"></span>
+      <span id="backend"></span>
+    </footer>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
