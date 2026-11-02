@@ -4,6 +4,8 @@ A standalone OpenSCAD implementation for the web: a TypeScript interpreter for t
 geometry backend built on [manifold-3d](https://github.com/elalish/manifold) (WASM), and a dependency-free
 WebGL2 viewer with order-independent transparency. No OpenSCAD code or binary is used.
 
+**Live demo: https://doccrazy.github.io/openscad-web/**
+
 The demo page (`demo/`) has a CodeMirror editor with live preview, a console with clickable diagnostics,
 the OpenSCAD customizer, exact render and STL export.
 
