@@ -35,10 +35,12 @@ export class CustomizerPanel {
   /** Update the parameter list (e.g. after the source changed). */
   setParameters(params: CustomizerParameter[]): void {
     const sig = JSON.stringify(params.map((p) => [p.name, p.group, p.description, p.type, p.initial, p.widget]));
-    // drop overrides that equal the (new) default or whose parameter disappeared
+    // drop overrides that equal the (new) default, whose parameter disappeared or changed its type
+    // (values set before the parameter list was known, e.g. restored ones, are kept if they fit)
     for (const [k, v] of [...this.values]) {
       const p = params.find((x) => x.name === k);
-      if (!p || valuesEqual(p.initial, v) || p.type !== this.params.find((x) => x.name === k)?.type) this.values.delete(k);
+      const old = this.params.find((x) => x.name === k);
+      if (!p || valuesEqual(p.initial, v) || (old ? p.type !== old.type : !sameKind(p.initial, v))) this.values.delete(k);
     }
     this.params = params;
     if (sig === this.signature) return;
@@ -241,4 +243,10 @@ export class CustomizerPanel {
     });
     return row;
   }
+}
+
+/** True if `v` can be used as the value of a parameter whose default is `initial`. */
+function sameKind(initial: Value, v: Value): boolean {
+  if (Array.isArray(initial)) return Array.isArray(v) && v.length === initial.length;
+  return typeof initial === typeof v;
 }
